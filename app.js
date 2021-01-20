@@ -33,7 +33,7 @@ const fruit = new Fruit({
     review: "Peaches are pretty good!"
 });
 // After doing it once its better to comment it out so there arent repeats in collection
-//fruit.save();
+// fruit.save();
 
 // To save many objects
 const banana = new Fruit({
@@ -79,19 +79,33 @@ Fruit.find(function (err, fruits) {
     }
 });
 
-// Updating objects
-Fruit.updateOne({
-    _id: "60077c0c1f89200b4c5d5641"
-}, {
-    rating: 10
-}, function (err) {
-    if (err) {
-        console.log(err);
-    } else {
-        console.log("Successfully updated the entry!");
-    }
-});
 
+// Updating objects
+
+// Fruit.updateOne({
+//     _id: "60077c0c1f89200b4c5d5641"
+// }, {
+//     rating: 10
+// }, function (err) {
+//     if (err) {
+//         console.log(err);
+//     } else {
+//         console.log("Successfully updated the entry!");
+//     }
+// });
+
+
+// Deleting objects
+
+// Fruit.deleteOne({
+//     name: "Peach"
+// }, function (err) {
+//     if (err) {
+//         console.log(err);
+//     } else {
+//         console.log("Item successfully deleted!");
+//     }
+// });
 
 
 
@@ -101,6 +115,7 @@ Fruit.updateOne({
 const personSchema = new mongoose.Schema({
     name: String,
     age: Number,
+    favoriteFruit: fruitSchema
 });
 
 // Creates the collection
@@ -114,3 +129,23 @@ const person = new Person({
 
 // After doing it once its better to comment it out so there arent repeats in collection
 // person.save();
+
+
+// Relationships
+
+const pineapple = new Fruit({
+    name: "Pineapple",
+    rating: 8,
+    review: "This is a great fruit"
+});
+pineapple.save();
+
+Person.updateOne({
+    name: "Joseph"
+}, {
+    favoriteFruit: pineapple
+}, function (err) {
+    if (err) {
+        console.log(err);
+    }
+});
