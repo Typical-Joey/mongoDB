@@ -11,8 +11,15 @@ mongoose.connect("mongodb://localhost:27017/fruitsDB", {
 
 // Create a Schema (Blueprint for all objects in the collection)
 const fruitSchema = new mongoose.Schema({
-    name: String,
-    rating: Number,
+    name: {
+        type: String,
+        required: [true, "Please check data entry, no name is specified"]
+    },
+    rating: {
+        type: Number,
+        min: 1,
+        max: 10
+    },
     review: String
 });
 
@@ -20,10 +27,10 @@ const fruitSchema = new mongoose.Schema({
 const Fruit = mongoose.model("Fruit", fruitSchema);
 
 // Creates new object in the collection
-const apple = new Fruit({
-    name: "Apple",
-    rating: 8,
-    review: "Apples are prety solid!"
+const fruit = new Fruit({
+    name: "Peach",
+    rating: 9,
+    review: "Peaches are pretty good!"
 });
 // After doing it once its better to comment it out so there arent repeats in collection
 //fruit.save();
@@ -47,15 +54,48 @@ const lemon = new Fruit({
     review: "Really sour, don't eat raw"
 });
 
-// Callback function just checks for errors
-Fruit.insertMany([banana, orange, lemon], function (err) {
+//Callback function just checks for errors
+// Fruit.insertMany([banana, orange, lemon], function (err) {
+//     if (err) {
+//         console.log(err);
+//     } else {
+//         console.log("Successfully added all objects to colleciton");
+//     }
+// });
+
+
+// Finding objects in database
+Fruit.find(function (err, fruits) {
     if (err) {
         console.log(err);
     } else {
-        console.log("Successfully added all objects to colleciton");
+
+        // Should be placed after last task you want completed
+        mongoose.connection.close();
+
+        fruits.forEach(function (fruit) {
+            console.log(fruit.name);
+        });
     }
 });
 
+// Updating objects
+Fruit.updateOne({
+    _id: "60077c0c1f89200b4c5d5641"
+}, {
+    rating: 10
+}, function (err) {
+    if (err) {
+        console.log(err);
+    } else {
+        console.log("Successfully updated the entry!");
+    }
+});
+
+
+
+
+// People Collection ----------------------------------------------
 
 // Create a Schema
 const personSchema = new mongoose.Schema({
@@ -73,4 +113,4 @@ const person = new Person({
 });
 
 // After doing it once its better to comment it out so there arent repeats in collection
-//person.save();
+// person.save();
